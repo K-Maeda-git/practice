@@ -1,3 +1,4 @@
 1;
-
-console.log(1);
+function index() {
+    console.log(1);
+}
