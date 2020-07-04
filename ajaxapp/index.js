@@ -1,59 +1,69 @@
-console.log("index.js:loaded");
+async function main() {
+  try {
+    const userId = getUserId();
+    const userInfo = await fetchUserInfo(userId);
+    const view = createView(userInfo);
+    displayView(view);
+  } catch (error) {
+    console.error(`エラーが発生しました(${error})`);
+  }
+}
 
-// CSSセレクタを使ってDOMツリー中のh2要素を取得する
-const heading = document.querySelector("h2");
-// h2要素に含まれるテキストコンテンツを取得する
-const headingText = heading.textContent;
-
-// button要素を作成する
-const button = document.createElement("button");
-button.textContent = "Push Me";
-
-// body要素の子要素としてbuttonを挿入する
-document.body.appendChild(button);
-
-const userId = "K-Maeda-git";
-// Fetch API
-fetch(`https://api.github.com/users/${encodeURIComponent(userId)}`)
-  .then((response) => {
-    console.log(response.status);
-    // エラーレスポンスが返されたことを検知する
+function fetchUserInfo(userId) {
+  // fetchの戻り値のPromiseをreturnする
+  return fetch(
+    `https://api.github.com/users/${encodeURIComponent(userId)}`
+  ).then((response) => {
     if (!response.ok) {
-      console.error("エラーレスポンス", response);
+      // エラーレスポンスからRejectedなPromiseを作成して返す
+      return Promise.reject(
+        new Error(`${response.status}: ${response.statusText}`)
+      );
     } else {
-      return response.json().then((userInfo) => {
-        console.log(userInfo);
-      });
+      return response.json();
     }
-  })
-  .catch((error) => {
-    console.error(error);
   });
+}
 
-// // XMLHttpRequest
-// function fetchUserInfo(userId) {
-//   // リクエストを作成する
-//   const request = new XMLHttpRequest();
-//   request.open(
-//     "GET",
-//     `https://api.github.com/users/${encodeURIComponent(userId)}`
-//   );
-//   request.addEventListener("load", () => {
-//     // リクエストが成功したかを判定する
-//     // Fetch APIのresponse.okと同等の意味
-//     if (request.status >= 200 && request.status < 300) {
-//       // レスポンス文字列をJSONオブジェクトにパースする
-//       const userInfo = JSON.parse(request.responseText);
-//       console.log(userInfo);
-//     } else {
-//       console.error("エラーレスポンス", request.statusText);
-//     }
-//   });
-//   request.addEventListener("error", () => {
-//     console.error("ネットワークエラー");
-//   });
-//   // リクエストを送信する
-//   request.send();
-// }
+function getUserId() {
+  const value = document.getElementById("userId").value;
+  return encodeURIComponent(value);
+}
 
+function createView(userInfo) {
+  return escapeHTML`
+  <h4>${userInfo.name} (@${userInfo.login})</h4>
+  <img src="${userInfo.avatar_url}" alt="${userInfo.login}" height="100">
+  <dl>
+    <bt>Location</bt>
+    <dd>${userInfo.location}</dd>
+    <dt>Repositories</dt>
+    <dd>${userInfo.public_repos}</dd>
+  </dl>
+  `;
+}
 
+function displayView(view) {
+  const result = document.getElementById("result");
+  result.innerHTML = view;
+}
+
+function escapeSpecialChars(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeHTML(strings, ...values) {
+  return strings.reduce((result, str, i) => {
+    const value = values[i - 1];
+    if (typeof value === "string") {
+      return result + escapeSpecialChars(value) + str;
+    } else {
+      return result + String(value) + str;
+    }
+  });
+}
