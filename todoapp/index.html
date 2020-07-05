@@ -1,0 +1,42 @@
+<!--
+     ローカルサーバーの起動は以下のコマンドを実行
+     npx @js-primer/local-server
+    -->
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>ToDo App</title>
+    <!-- CSSファイルの読み込み -->
+    <!-- <link
+      href="https://jsprimer.net/use-case/todoapp/final/final/index.css"
+      rel="stylesheet"
+    /> -->
+    <link rel="stylesheet" href="css/stylesheet.css">
+
+  </head>
+  <body>
+    <!-- class属性をCSS用に指定 -->
+    <div class="todoapp">
+      <!-- id属性をJavaScript用に指定 -->
+      <form id="js-form">
+        <input
+          id="js-form-input"
+          class="new-todo"
+          type="text"
+          placeholder="What need to be done?"
+          autocomplete="off"
+        />
+      </form>
+      <!-- ToDoアプリのメインとなるToDoリスト -->
+      <div id="js-todo-list" class="todo-list">
+        <!-- 動的に更新されるToDoリスト -->
+      </div>
+      <footer class="footer">
+        <!-- ToDoアイテム数の表示 -->
+        <span id="js-todo-count">ToDoアイテム数：0</span>
+      </footer>
+    </div>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>
