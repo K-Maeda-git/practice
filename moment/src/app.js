@@ -1,9 +1,22 @@
 "use strict";
 exports.__esModule = true;
-var moment = require("moment");
 // import * as moment from "moment";
 // import moment from 'moment';
+var moment = require("moment");
 var typeorm_1 = require("typeorm");
+var Test = /** @class */ (function () {
+    function Test() {
+        this.dateSTR = "202012";
+        // betweenで前後2ヶ月を範囲検索
+        this.BetweenDate = typeorm_1.Between(
+        // moment(${ this.dateSTR }01).subscribe(2, 'month').format('YYYYMM'),
+        // moment(${ this.dateSTR }01).add(2, 'month').format('YYYYMM'),
+        moment(this.dateSTR + "01").subtract(2, "month").format("YYYYMM"), moment(this.dateSTR + "01").add(2, "month").format("YYYYMM"));
+    }
+    return Test;
+}());
+var test = new Test();
+console.log(test.BetweenDate);
 // const yyyymm = '202008';
 // function dateSET(hoge:string) {
 //   const a = hoge.slice(0, 4);
@@ -58,16 +71,3 @@ var typeorm_1 = require("typeorm");
 //       .format('YYYYMM'),
 //   );
 // }
-var Test = /** @class */ (function () {
-    function Test() {
-        this.dateSTR = "202008";
-        // betweenで前後2ヶ月を範囲検索
-        this.BetweenDate = typeorm_1.Between(
-        // moment(${ this.dateSTR }01).subscribe(2, 'month').format('YYYYMM'),
-        // moment(${ this.dateSTR }01).add(2, 'month').format('YYYYMM'),
-        moment(this.dateSTR + "01").subtract(2, "month").format("YYYYMM"), moment(this.dateSTR + "01").add(2, "month").format("YYYYMM"));
-    }
-    return Test;
-}());
-var test = new Test();
-console.log(test.BetweenDate);

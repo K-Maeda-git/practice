@@ -4,7 +4,7 @@ import moment = require("moment");
 import { Between } from "typeorm";
 
 class Test {
-  dateSTR = "202008";
+  dateSTR = "202012";
 
   // betweenで前後2ヶ月を範囲検索
   BetweenDate = Between(
