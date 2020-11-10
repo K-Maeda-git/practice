@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: test
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /test/one:
+    post:
+      summary: ''
+      operationId: post-test-one
+      responses:
+        '200':
+          description: OK
+components:
+  schemas: {}
